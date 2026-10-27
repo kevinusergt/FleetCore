@@ -13,6 +13,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
 import { RolesGuard } from './common/guards/roles.guard.js';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor.js';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter.js';
+import { parseBooleanEnv } from './config/env.js';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -27,7 +28,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter.js';
         password: c.get<string>('DB_PASSWORD'),
         database: c.get<string>('DB_NAME', 'fleet_core'),
         autoLoadEntities: true,
-        synchronize: c.get<string>('DB_SYNCHRONIZE', 'true') === 'true',
+        synchronize: parseBooleanEnv(c.get<string>('DB_SYNCHRONIZE'), false),
       }),
     }),
     AuthModule,
