@@ -14,7 +14,7 @@ export const dataSourceOptions: DataSourceOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME ?? 'fleet_core',
   entities: [User, Vehicle, Mechanic, Workshop, Maintenance],
-  synchronize: process.env.DB_SYNCHRONIZE !== 'false',
+  synchronize: process.env.DB_SYNCHRONIZE === 'true',
 };
 
 export const AppDataSource = new DataSource(dataSourceOptions);

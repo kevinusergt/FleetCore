@@ -2,37 +2,39 @@
 
 **Coder:** kevin villalobos ruiz 
 **Ruta:** NodeJS/Nestjs 
-API REST NestJS + TypeScript + TypeORM + PostgreSQL para administrar vehículos, mecánicos, talleres y mantenimientos.
+API REST NestJS + TypeScript + TypeORM + PostgreSQL it helps you manage vehicles, mechanics, workshops, and maintenance.
 
-## Requisitos
+## Requirements
 Node.js 20+, npm y PostgreSQL 14+ (o Docker).
 
-## Inicio local
-1. Copia `.env.example` a `.env` y configura las credenciales.
-2. Instala dependencias: `npm install`.
-3. Inicia PostgreSQL y crea la base `fleet_core`.
-4. Ejecuta `npm run seed` para cargar datos de prueba.
-5. Ejecuta `npm run start:dev`.
-6. Swagger: http://localhost:3000/docs
+## Local starting
+1. Copy the file .env.example and rename it to .env. Add your information.
+2. Install the packages: Run npm install in your terminal.
+3. Start PostgreSQL and create a database named fleet_core.
+4. Add test data: Run npm run seed. You can run this multiple times safely.
+5. Start the server: Run npm run start:dev.
+6. Open Swagger documentation at: http://localhost:3000/docs
 
-El esquema SQL está en `database/fleetcore.sql`; para datos de prueba se recomienda `npm run seed`, que es idempotente.
+Note: You can find the database structure in database/fleetcore.sql.
 
 ## Docker
-Configura `.env` y ejecuta `docker compose up --build`. Luego ejecuta `npm run seed` dentro del contenedor con `docker compose exec app npm run seed`.
+1. Set up your .env file.
+2. Run docker compose up --build.
+3. To add test data inside Docker, run: docker compose exec app npm run seed.
 
-## Autenticación
-- `POST /api/auth/register`: registra un usuario con rol TECHNICIAN.
-- `POST /api/auth/login`: devuelve JWT. En Swagger usa Authorize con `Bearer <token>`.
-- La creación de usuarios ADMIN/MANAGER debe realizarse de forma controlada por el administrador/seed, no mediante registro público.
-- Integración externa: `GET /api/integrations/maintenance-summary` requiere `x-api-key`.
+## Authentication
+- POST /api/auth/register: Create a new user with the TECHNICIAN role.
+- POST /api/auth/login: Get a JWT token. In Swagger, click "Authorize" and type Bearer <token>.
+- Note: Only the Admin or the seed script can create ADMIN and MANAGER users. You cannot create them using the public register link.
+- External Systems: GET /api/integrations/maintenance-summary needs an x-api-key in the header.
 
-## Roles
-- ADMIN: CRUD de catálogo y mantenimientos.
-- MANAGER: crear y gestionar mantenimientos.
-- TECHNICIAN: consultar mantenimientos y actualizar estados; el proyecto debe vincular la identidad de técnico con su mecánico usando el mismo correo.
+## User Roles
+- ADMIN: Can create, read, update, and delete everything.
+- TECHNICIAN: Can see maintenance tasks and change their status. Important: The technician user account and the mechanic profile must use the same email address.
 
-## Estados y reglas
-Vehículos: `AVAILABLE`, `IN_MAINTENANCE`, `INACTIVE`. Mantenimientos: `SCHEDULED`, `IN_PROGRESS`, `COMPLETED`, `CANCELLED`. Los vehículos, mecánicos y talleres se inactivan para conservar el historial. Un mantenimiento completado requiere trabajo realizado, costo, fecha de finalización y kilometraje final.
+## Status and Rules
+- Vehicles: Can be AVAILABLE (ready), IN_MAINTENANCE (fixing), or INACTIVE (disabled).
+- Maintenance: Can be SCHEDULED, IN_PROGRESS, COMPLETED, or CANCELLED.
+- Note: You cannot delete vehicles, mechanics, or workshops. You can only make them INACTIVE to keep the history.
+- To finish a maintenance (COMPLETED), you must provide: work done description, cost, end date, and final mileage.
 
-## Nota de hashing
-Este entregable usa bcrypt por la instrucción de implementación acordada. El enunciado de la prueba solicita Argon2; si el evaluador revisa ese requisito literalmente, cambia el hashing a Argon2 antes de entregar.

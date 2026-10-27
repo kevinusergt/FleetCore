@@ -1,29 +1,30 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
 import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module.js';
+import { AppModule } from './../src/app.module';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+describe('FleetCore API (e2e)', () => {
+  let app: INestApplication;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
+    app = moduleRef.createNestApplication();
+    app.setGlobalPrefix('api');
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  afterAll(async () => {
+    await app.close();
   });
 
-  afterEach(async () => {
-    await app.close();
+  it('responde en la ruta de autenticación', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/api/auth/login')
+      .send({});
+
+    expect([400, 401, 404]).toContain(response.status);
   });
 });

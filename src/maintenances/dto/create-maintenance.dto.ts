@@ -8,8 +8,16 @@ import {
   IsPositive,
 } from 'class-validator';
 import { MaintenanceType } from '../entities/maintenance.entity.js';
+import { ApiProperty } from '@nestjs/swagger';
 export class CreateMaintenanceDto {
-  @IsEnum(MaintenanceType) type: MaintenanceType;
+  @ApiProperty({
+    example: MaintenanceType.PREVENTIVE,
+  })
+  @IsEnum(MaintenanceType) 
+  type: MaintenanceType;
+  @ApiProperty({
+    example: 'Oil change and filter replacement',
+  })
   @IsString() 
   description: string;
   @IsInt() 

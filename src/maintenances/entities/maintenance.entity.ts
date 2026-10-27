@@ -23,23 +23,32 @@ export enum MaintenanceStatus {
 }
 @Entity('maintenances')
 export class Maintenance {
-  @PrimaryGeneratedColumn() id: number;
-  @Column({ type: 'enum', enum: MaintenanceType }) type: MaintenanceType;
-  @Column({ type: 'text' }) description: string;
-  @Column({ type: 'int' }) mileage: number;
-  @Column({ type: 'timestamp' }) scheduledAt: Date;
+  @PrimaryGeneratedColumn() 
+  id: number;
+  @Column({ type: 'enum', enum: MaintenanceType }) 
+  type: MaintenanceType;
+  @Column({ type: 'text' }) 
+  description: string;
+  @Column({ type: 'int' }) 
+  mileage: number;
+  @Column({ type: 'timestamp' }) 
+  scheduledAt: Date;
   @Column({
     type: 'enum',
     enum: MaintenanceStatus,
     default: MaintenanceStatus.SCHEDULED,
   })
   status: MaintenanceStatus;
-  @Column({ type: 'timestamp', nullable: true }) scheduledEndAt: Date | null;
-  @Column({ type: 'text', nullable: true }) workPerformed: string | null;
+  @Column({ type: 'timestamp', nullable: true }) 
+  scheduledEndAt: Date | null;
+  @Column({ type: 'text', nullable: true }) 
+  workPerformed: string | null;
   @Column({ type: 'numeric', precision: 12, scale: 2, nullable: true })
   finalCost: string | null;
-  @Column({ type: 'timestamp', nullable: true }) completedAt: Date | null;
-  @Column({ type: 'int', nullable: true }) finalMileage: number | null;
+  @Column({ type: 'timestamp', nullable: true }) 
+  completedAt: Date | null;
+  @Column({ type: 'int', nullable: true }) 
+  finalMileage: number | null;
   @ManyToOne(() => Vehicle, (v) => v.maintenances, {
     nullable: false,
     onDelete: 'RESTRICT',
