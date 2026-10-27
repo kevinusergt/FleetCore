@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import type {Relation} from 'typeorm';
+import type { Relation } from 'typeorm';
 import { Vehicle } from '../../vehicles/entities/vehicle.entity.js';
 import { Mechanic } from '../../mechanics/entities/mechanic.entity.js';
 import { Workshop } from '../../workshops/entities/workshop.entity.js';

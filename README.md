@@ -1,7 +1,7 @@
 # FleetCore API
 
-**Coder:** [Escribe tu nombre]  
-**Clan:** [Escribe tu clan]
+**Coder:** kevin villalobos ruiz 
+**Ruta:** NodeJS/Nestjs 
 API REST NestJS + TypeScript + TypeORM + PostgreSQL para administrar vehículos, mecánicos, talleres y mantenimientos.
 
 ## Requisitos
