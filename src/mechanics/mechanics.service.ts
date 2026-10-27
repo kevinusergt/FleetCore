@@ -23,11 +23,14 @@ export class MechanicsService {
     );
   }
   findAll() {
-    return this.repo.find({ order: { id: 'ASC' } });
+    return this.repo.find({
+      where: { active: true },
+      order: { id: 'ASC' },
+    });
   }
   async findOne(id: number) {
     const m = await this.repo.findOne({
-      where: { id },
+      where: { id, active: true },
       relations: { maintenances: true },
     });
     if (!m) throw new NotFoundException('Mecánico no encontrado');

@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { Vehicle, VehicleStatus } from './entities/vehicle.entity.js';
 import { CreateVehicleDto } from './dto/create-vehicle.dto.js';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto.js';
@@ -23,11 +23,14 @@ export class VehiclesService {
     );
   }
   findAll() {
-    return this.repo.find({ order: { id: 'ASC' } });
+    return this.repo.find({
+      where: { status: Not(VehicleStatus.INACTIVE) },
+      order: { id: 'ASC' },
+    });
   }
   async findOne(id: number) {
     const v = await this.repo.findOne({
-      where: { id },
+      where: { id, status: Not(VehicleStatus.INACTIVE) },
       relations: { maintenances: true },
     });
     if (!v) throw new NotFoundException('Vehículo no encontrado');
@@ -35,7 +38,10 @@ export class VehiclesService {
   }
   async findByPlate(plate: string) {
     const v = await this.repo.findOne({
-      where: { plate: plate.toUpperCase() },
+      where: {
+        plate: plate.toUpperCase(),
+        status: Not(VehicleStatus.INACTIVE),
+      },
     });
     if (!v) throw new NotFoundException('Vehículo no encontrado');
     return v;

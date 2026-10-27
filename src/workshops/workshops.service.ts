@@ -16,7 +16,7 @@ export class WorkshopsService {
     return this.repo.find({ where: { active: true }, order: { id: 'ASC' } });
   }
   async findOne(id: number) {
-    const w = await this.repo.findOneBy({ id });
+    const w = await this.repo.findOneBy({ id, active: true });
     if (!w) throw new NotFoundException('Taller no encontrado');
     return w;
   }
