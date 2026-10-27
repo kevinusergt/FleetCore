@@ -1,26 +1,2 @@
-import { Injectable } from '@nestjs/common';
-import { CreateWorkshopDto } from './dto/create-workshop.dto.js';
-import { UpdateWorkshopDto } from './dto/update-workshop.dto.js';
-
-@Injectable()
-export class WorkshopsService {
-  create(createWorkshopDto: CreateWorkshopDto) {
-    return 'This action adds a new workshop';
-  }
-
-  findAll() {
-    return `This action returns all workshops`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} workshop`;
-  }
-
-  update(id: number, updateWorkshopDto: UpdateWorkshopDto) {
-    return `This action updates a #${id} workshop`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} workshop`;
-  }
-}
+import { Injectable, NotFoundException } from '@nestjs/common'; import { InjectRepository } from '@nestjs/typeorm'; import { Repository } from 'typeorm'; import { Workshop } from './entities/workshop.entity.js'; import { CreateWorkshopDto } from './dto/create-workshop.dto.js'; import { UpdateWorkshopDto } from './dto/update-workshop.dto.js';
+@Injectable() export class WorkshopsService {constructor(@InjectRepository(Workshop) private repo:Repository<Workshop>){} create(dto:CreateWorkshopDto){return this.repo.save(this.repo.create({...dto,active:dto.active??true}))} findAll(){return this.repo.find({where:{active:true},order:{id:'ASC'}})} async findOne(id:number){const w=await this.repo.findOneBy({id});if(!w)throw new NotFoundException('Taller no encontrado');return w} async update(id:number,dto:UpdateWorkshopDto){const w=await this.repo.findOneBy({id});if(!w)throw new NotFoundException('Taller no encontrado');Object.assign(w,dto);return this.repo.save(w)} async remove(id:number){return this.update(id,{active:false})} }
