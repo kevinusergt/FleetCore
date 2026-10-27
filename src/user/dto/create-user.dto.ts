@@ -17,7 +17,7 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty({
-    example:'12345'
+    example: 'Tech12345!',
   })
   @IsString() 
   @MinLength(8) 
