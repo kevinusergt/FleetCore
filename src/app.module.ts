@@ -24,7 +24,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter.js';
         host: c.get<string>('DB_HOST', 'localhost'),
         port: Number(c.get<string>('DB_PORT', '5432')),
         username: c.get<string>('DB_USER', 'postgres'),
-        password: c.get<string>('DB_PASSWORD', 'postgres'),
+        password: c.get<string>('DB_PASSWORD'),
         database: c.get<string>('DB_NAME', 'fleet_core'),
         autoLoadEntities: true,
         synchronize: c.get<string>('DB_SYNCHRONIZE', 'true') === 'true',
